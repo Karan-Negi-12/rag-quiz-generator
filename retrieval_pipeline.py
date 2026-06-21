@@ -4,19 +4,12 @@ from langchain_chroma import Chroma
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
 
 load_dotenv()
-# ==========================================
-# CONFIG
-# ==========================================
 DB_PATH = "db/chroma_db"
-# ==========================================
-# LOAD EMBEDDINGS
-# ==========================================
+
 embeddings = GoogleGenerativeAIEmbeddings(
     model="models/gemini-embedding-001"
 )
-# ==========================================
-# LOAD CHROMA DB
-# ==========================================
+
 db = Chroma(
     persist_directory=DB_PATH,
     embedding_function=embeddings
@@ -25,16 +18,12 @@ print(
     f"\nLoaded Vector DB "
     f"with {db._collection.count()} chunks"
 )
-# ==========================================
-# LOAD LLM
-# ==========================================
+
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.5-flash",
     temperature=0
 )
-# ==========================================
-# CHAT LOOP
-# ==========================================
+
 while True:
     query = input(
         "\nAsk a Question (or type exit): "
@@ -63,9 +52,7 @@ while True:
             doc.page_content[:500]
         )
         print("-" * 50)
-    # =========================================
-    # BUILD CONTEXT
-    # ==========================================
+
     context = "\n\n".join(
         [
             doc.page_content
@@ -80,9 +67,6 @@ Question:
 Context:
 {context}
 """
-    # ==========================================
-    # GENERATE ANSWER
-    # ==========================================
     response = llm.invoke(prompt)
     print(
         "\n========== ANSWER =========="

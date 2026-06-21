@@ -3,39 +3,22 @@ import random
 from dotenv import load_dotenv
 from langchain_chroma import Chroma
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
-# ==========================================
-# LOAD ENV
-# ==========================================
+
 load_dotenv()
 DB_PATH = "db/chroma_db"
-# ==========================================
-# LOAD EMBEDDING MODEL
-# ==========================================
-#embeddings = GoogleGenerativeAIEmbeddings(
-#    model="models/gemini-embedding-001"
-#)
-# ==========================================
-# LOAD CHROMA DB
-# ==========================================
+
 db = Chroma(
     persist_directory=DB_PATH
 )
-# ==========================================
-# LOAD LLM
-# ==========================================
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.5-flash",
     temperature=0
 )
-# ==========================================
-# GET ALL CHUNKS
-# ==========================================
+
 all_data = db.get()
 all_chunks = all_data["documents"]
 print(f"\nTotal Chunks Available: {len(all_chunks)}")
-# ==========================================
-# RANDOM CHUNK SELECTION
-# ==========================================
+
 NUM_RANDOM_CHUNKS = 50
 selected_chunks = random.sample(
     all_chunks,
@@ -44,13 +27,9 @@ selected_chunks = random.sample(
 print(
     f"Selected {len(selected_chunks)} random chunks"
 )
-# ==========================================
-# BUILD CONTEXT
-# ==========================================
+
 context = "\n\n".join(selected_chunks)
-# ==========================================
-# PROMPT
-# ==========================================
+
 prompt = f"""
 You are an expert quiz generator.
 Using ONLY the provided context,
@@ -81,9 +60,6 @@ JSON Format:
 Context:
 {context}
 """
-# ==========================================
-# GENERATE QUIZ
-# ==========================================
 response = llm.invoke(prompt)
 print("\n========== GENERATED QUIZ ==========\n")
 try:

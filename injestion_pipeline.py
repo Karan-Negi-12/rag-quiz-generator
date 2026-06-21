@@ -7,11 +7,7 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_chroma import Chroma
 from functools import partial
 
-# --------------------------------------------------
-# Load Environment Variables
-# --------------------------------------------------
 load_dotenv()
-
 def load_documents(docs_path="docs"):
     print(f"\nLoading documents from: {docs_path}")
     if not os.path.exists(docs_path):
@@ -45,9 +41,6 @@ def load_documents(docs_path="docs"):
             f"{len(doc.page_content)} characters"
         )
     return documents
-# ==================================================
-# SPLIT DOCUMENTS
-# ==================================================
 def split_documents(
     documents,
     chunk_size=1200,
@@ -76,9 +69,6 @@ def split_documents(
         print(chunk.page_content[:500])
         print("-" * 50)
     return chunks
-# ==================================================
-# CREATE VECTOR STORE
-# ==================================================
 def create_vector_store(
     chunks,
     persist_directory="db/chroma_db",
@@ -134,10 +124,6 @@ def create_vector_store(
 
     print("\nVector Store Created Successfully")
     return vectorstore
-# ==================================================
-# MAIN
-# ==================================================
-
 def main():
     DOCS_PATH = "docs"
     DB_PATH = "db/chroma_db"
